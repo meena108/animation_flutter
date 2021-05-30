@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,10 +22,14 @@ class MyHomePage extends StatefulWidget {
 }
 class _MyHomePageState extends State<MyHomePage> {
   Color _end = Colors.black;
-  int counter = 0;
-  void _incrementCounter() {
+  int _counter = 0;
+  Future<void> _incrementCounter() async {
     setState(() {
       _end = Colors.blue;
+    });
+    await Future.delayed(Duration(seconds: 3));
+    setState(() {
+      _end = Colors.red;
     });
   }
   @override
@@ -42,29 +43,36 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TweenAnimationBuilder<Color>(
-              tween: ColorTween(begin: Colors.white, end: _end),
+              tween: Tween(begin: Colors.white, end: _end),
               duration: Duration(seconds: 2),
-              onEnd: () {
-                setState(() {
-                  _end = Colors.primaries[Random().nextInt(17)];
-                });
-              },
-              child: Image.network(
-                "https://i.gadgets360cdn.com/large/earth_large_1598600383967.jpg?downsize=950:*&output-quality=80",
-                height: 200,
-                width: 200,
-                fit: BoxFit.contain,
-              ),
-              builder: (context, color, child ){
-                counter++;
-                print("counter $counter");
-
+              builder: (context, color, child) {
                 return ColorFiltered(
-                    child: child,
-                    colorFilter: ColorFilter.mode(color, BlendMode.color)
+                  child: Image.network(
+                    "https://www.businessinsider.in/thumb.cms?msid=73771721&width=1200&height=900",
+                    height: 200,
+                    width: 200,
+                    fit: BoxFit.contain,
+                  ),
+                  colorFilter: ColorFilter.mode(color, BlendMode.color),
                 );
               },
-            )
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            // Slider(value: value,
+            //     label: "Slider",
+            //     max: 10,
+            //     min: 1,
+            //     divisions: 10,
+            //     onChanged: (val){
+            //     setState(() {
+            //       _end = Colors
+            //           .primaries[val.toInt()];
+            //       value = val;
+            //     });
+            //
+            // })
           ],
         ),
       ),
@@ -72,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
